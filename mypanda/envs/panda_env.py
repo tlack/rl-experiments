@@ -10,7 +10,7 @@ import numpy as np
 import random
 import time
 
-MAX_EPISODE_LEN = 22
+MAX_EPISODE_LEN = 100
 
 class PandaEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -23,6 +23,7 @@ class PandaEnv(gym.Env):
         p.resetDebugVisualizerCamera(cameraDistance=1.5, cameraYaw=0, cameraPitch=-40, cameraTargetPosition=[0.55,-0.35,0.2])
         self.action_space = spaces.Box(np.array([-1]*4), np.array([1]*4))
         self.observation_space = spaces.Box(np.array([-1]*8), np.array([1]*8))
+        self.n_bumps = 0
 
     def step(self, action):
         p.configureDebugVisualizer(p.COV_ENABLE_SINGLE_STEP_RENDERING)
@@ -72,6 +73,7 @@ class PandaEnv(gym.Env):
             print('BUMPED!')
             reward = 100
             done = True
+            self.n_bumps += 1
         else:
             # print(np.array(state_object) - np.array(newPosition))
             diff = dist(state_object, newPosition) * 3
@@ -85,7 +87,7 @@ class PandaEnv(gym.Env):
         if self.step_counter > MAX_EPISODE_LEN:
             if self.episode_counter % 10 == 0:
                 def f(n): return ",".join([f"{x:02f}" for x in n])
-                print(f"r: {f([self.episode_reward / (self.episode_counter+1)])} / obj: {f(state_object)} / bot: {f(newPosition)}")
+                print(f"r: {f([reward, self.episode_reward / (self.step_counter+1)])} / b: {f([self.n_bumps / (self.episode_counter+1)])}")
                 time.sleep(1)
             reward = 0
             done = True
@@ -100,6 +102,7 @@ class PandaEnv(gym.Env):
         return np.array(self.observation).astype(np.float32), reward, done, info
 
     def reset(self):
+        self.episode_reward = 0
         self.step_counter = 0
         p.resetSimulation()
         p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,0) # we will enable rendering after we loaded everything
