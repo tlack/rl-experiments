@@ -15,6 +15,19 @@ import numpy
 import mypanda
 
 
+# https://stackoverflow.com/a/39662359
+def is_notebook():
+    try:
+        shell = get_ipython().__class__.__name__
+        if shell == "ZMQInteractiveShell":
+            return True  # Jupyter notebook or qtconsole
+        elif shell == "TerminalInteractiveShell":
+            return False  # Terminal running IPython
+        else:
+            return False  # Other type (?)
+    except NameError:
+        return False  # Probably standard Python interpreter
+
 class Utils:
     def prepro(self, I):
         I = I[35:195]  # crop
@@ -338,11 +351,16 @@ class Agent:
 def plot(datas):
     print("----------")
 
-    plt.plot(datas)
-    plt.plot()
-    plt.xlabel("Episode")
-    plt.ylabel("Datas")
-    plt.show()
+    if len(datas) == 0:
+        print('No data!')
+        return
+
+    if is_notebook():
+        plt.plot(datas)
+        plt.plot()
+        plt.xlabel("Episode")
+        plt.ylabel("Datas")
+        plt.show()
 
     print("Max :", np.max(datas))
     print("Min :", np.min(datas))
@@ -365,8 +383,8 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
         action = agent.act(state).numpy()
         next_state, reward, done, _ = env.step(action)
 
-        if n_steps_this_ep == 0:
-            print(f"first step:\nreward: {reward:03f}\nnext_state: {next_state}")
+        #if n_steps_this_ep == 0:
+        #    print(f"first step:\nreward: {reward:03f}\nnext_state: {next_state}")
 
         n_steps_this_ep += 1
         t_updates += 1
@@ -533,6 +551,12 @@ def main(
             plot(rewards)
             plot(times)
 
+    for reward in batch_rewards:
+        rewards.append(reward)
+
+    for time in batch_times:
+        times.append(time)
+
     print("Configuration:\n", repr(locals()))
     print("========== Final ==========")
     # Plot the reward, times for every episode
@@ -540,14 +564,15 @@ def main(
     plot(times)
     rmn = np.min(rewards)
     rmx = np.max(rewards)
-    rma = np.avg(rewards)
-    sa = np.avg(times)
+    rma = np.mean(rewards)
     n_goals = env.n_goals
+    env.close()
     return {
         "n_goals": n_goals,
-        "rewards": {"min": rmn, "max": rmx, "avg": rma},
+        "rewards": {"min": rmn, "max": rmx, "mean": rma},
         "total_steps": total_steps,
-        "avg_steps": sa,
+        "mean_steps": np.mean(times),
+        "goals_per_step": n_goals / total_steps
     }
 
 
