@@ -435,6 +435,7 @@ def main(
     env = gym.make(env_name)
     env.action_muting = action_muting
     env.steps_per_episode = steps_per_episode
+    env.goal = goal_type
 
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]

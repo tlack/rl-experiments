@@ -124,25 +124,25 @@ class PandaEnv(gym.Env):
                 done = False
             else:
                 reward = 1 - diff
+        else:
+            print('bad goal')
+            raise ValueError
 
         self.episode_reward += reward
         self.step_counter += 1
 
         if self.step_counter > self.steps_per_episode:
             if self.episode_counter % 10 == 0:
-
                 def f(n):
                     return ",".join([f"{x:02f}" for x in n])
-
                 print(
                     f"reward (this, avg/step): {f([reward, self.episode_reward / (self.step_counter+1)])}"
                 )
                 print(
                     f"goals: {self.n_goals} / {f([self.n_goals / (self.episode_counter+1)])}"
                 )
-                time.sleep(1)
-                reward = 0
-                done = True
+            reward = 0
+            done = True
 
         info = {"object_position": state_object}
         self.observation = state_robot + state_fingers + state_object

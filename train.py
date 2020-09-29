@@ -1,9 +1,9 @@
 # CHANGE THIS:
 
 opt_ranges = {
-    "n_episode": [100],
-    "n_update": [4, 24, 99, 299, 499, 999, 1499],
-    "goal_type": ["touches"]
+    "n_episode": [250],
+    "n_update": [24, 99, 299, 499, 999, 1499],
+    "goal_type": ["bumps"]
 }
 
 #
