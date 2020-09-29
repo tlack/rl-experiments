@@ -111,10 +111,10 @@ class PandaEnv(gym.Env):
 
         if self.step_counter > self.steps_per_episode:
             if self.episode_counter % 10 == 0:
-                def f(n): return ",".join([f"{x:02f}" for x in n])
-                print(f"reward (this, avg/step): {f([reward, self.episode_reward / (self.step_counter+1)])}")
+								def f(n): return ",".join([f"{x:02f}" for x in n])
+								print(f"reward (this, avg/step): {f([reward, self.episode_reward / (self.step_counter+1)])}")
 								print(f"goals: {n_goals} / {f([self.n_goals / (self.episode_counter+1)])}")
-                time.sleep(1)
+								time.sleep(1)
             reward = 0
             done = True
 
