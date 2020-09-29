@@ -283,6 +283,9 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
     while not done:
         action                          = agent.act(state).numpy()
         next_state, reward, done, _     = env.step(action)
+
+        if eps_time == 0:
+            print(f'first step:\nreward: {reward:03f}\nnext_state: {next_state}')
         
         eps_time        += 1 
         t_updates       += 1
