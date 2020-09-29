@@ -308,7 +308,7 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
                 highest = total_reward
             return total_reward, eps_time, t_updates           
 
-def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.2):
+def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5):
    ############## Hyperparameters ##############
     load_weights        = False # If you want to load the agent, set this to True
     save_weights        = True # If you want to save the agent, set this to True
