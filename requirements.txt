@@ -1,0 +1,7 @@
+tensorflow==2.0.0b1
+tensorflow-probability
+pybullet
+gym
+keras
+matplotlib
+
