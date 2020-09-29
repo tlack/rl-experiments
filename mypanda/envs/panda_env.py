@@ -37,7 +37,7 @@ class PandaEnv(gym.Env):
         self.action_muting = 0.2
         self.steps_per_episode = MAX_EPISODE_LEN
         self.goal = "bumps"
-        p.connect(p.GUI if is_notebook() else p.DIRECT)
+        p.connect(p.DIRECT if is_notebook() else p.GUI)
         p.resetDebugVisualizerCamera(
             cameraDistance=1.5,
             cameraYaw=0,
