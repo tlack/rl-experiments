@@ -311,7 +311,7 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
                 highest = total_reward
             return total_reward, eps_time, t_updates           
 
-def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, PPO_epochs=5):
+def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, PPO_epochs=5, n_steps_per_episode=100):
    ############## Hyperparameters ##############
     load_weights        = False # If you want to load the agent, set this to True
     save_weights        = True # If you want to save the agent, set this to True
@@ -321,6 +321,7 @@ def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, 
 
     render              = False # If you want to display the image. Turn this off if you run this in Google Collab
     #n_update            = 50 # How many episode before you update the Policy. ocommended set to 128 for Discrete
+    #n_steps_per_episode = 100 # How many steps per episode, before reset?
     n_plot_batch        = 1000 # How many episode you want to plot the result
     n_episode           = 1000 # How many episode you want to run
     n_saved             = 100 # How many episode to run before saving the weights
@@ -340,6 +341,7 @@ def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, 
     env_name            = 'panda-v9' # Set the env you want
     env                 = gym.make(env_name)
     env.action_muting   = action_muting
+    env.steps_per_episode=steps_per_episode
 
     state_dim           = env.observation_space.shape[0]
     action_dim          = env.action_space.shape[0]
