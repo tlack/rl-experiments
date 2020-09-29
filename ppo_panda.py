@@ -277,17 +277,17 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
     state           = env.reset()
     done            = False
     total_reward    = 0
-    eps_time        = 0
+    n_steps_this_ep = 0
     ############################################
     
     while not done:
         action                          = agent.act(state).numpy()
         next_state, reward, done, _     = env.step(action)
 
-        if eps_time == 0:
+        if n_steps_this_ep == 0:
             print(f'first step:\nreward: {reward:03f}\nnext_state: {next_state}')
         
-        eps_time        += 1 
+        n_steps_this_ep        += 1 
         t_updates       += 1
         total_reward    += reward
 
@@ -309,7 +309,7 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
                 env.render
                 print('RECORD!', total_reward)
                 highest = total_reward
-            return total_reward, eps_time, t_updates           
+            return total_reward, n_steps_this_ep, t_updates           
 
 def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, PPO_epochs=5, steps_per_episode=100, goal_type="bumps"):
    ############## Hyperparameters ##############
@@ -366,14 +366,15 @@ def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, 
     times               = []
     batch_times         = []
 
-    total_time          = 0
+    total_steps         = 0
     t_updates           = 0
 
     for i_episode in range(1, n_episode + 1):
-        total_reward, time, t_updates = run_episode(env, agent, state_dim, render, training_mode, t_updates, n_update)
+        total_reward, steps_this_ep, t_updates = run_episode(env, agent, state_dim, render, training_mode, t_updates, n_update)
         print('Episode {} \t t_reward: {} \t time: {} \t '.format(i_episode, total_reward, time))
+				total_steps += steps_this_ep
         batch_rewards.append(int(total_reward))
-        batch_times.append(time)        
+        batch_times.append(steps_this_ep)        
 
         if save_weights:
             if i_episode % n_saved == 0:
@@ -423,6 +424,12 @@ def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, 
      # Plot the reward, times for every episode
     plot(rewards)
     plot(times) 
+		rmn = np.min(rewards)
+		rmx = np.max(rewards)
+		rma = np.avg(rewards)
+		sa = np.avg(times)
+		n_goals = env.n_goals
+		return {"n_goals": n_goals, "rewards": {"min": rmn, "max": rmx, "avg": rma}, "total_steps": total_steps, "avg_steps": sa}
 
 if __name__ == '__main__':
     main()

@@ -37,7 +37,7 @@ class PandaEnv(gym.Env):
         p.resetDebugVisualizerCamera(cameraDistance=1.5, cameraYaw=0, cameraPitch=-40, cameraTargetPosition=[0.55,-0.35,0.2])
         self.action_space = spaces.Box(np.array([-1]*4), np.array([1]*4))
         self.observation_space = spaces.Box(np.array([-1]*8), np.array([1]*8))
-        self.n_bumps = 0
+        self.n_goals = 0
 
     def step(self, action):
         p.configureDebugVisualizer(p.COV_ENABLE_SINGLE_STEP_RENDERING)
@@ -89,7 +89,7 @@ class PandaEnv(gym.Env):
                 print('BUMPED!')
                 reward = 100
                 done = True
-                self.n_bumps += 1
+                self.n_goals += 1
             else:
                 # print(np.array(state_object) - np.array(newPosition))
                 diff = dist(state_object, newPosition) * 3
@@ -99,10 +99,12 @@ class PandaEnv(gym.Env):
         elif self.goal == 'touches':
             diff = dist(state_object, newPosition) * 10
             if diff < 0:
+                print('BUMPED!')
+                self.n_goals += 1
                 reward = 10
                 done = False
             else:
-                reward= 1 - diff
+                reward = 1 - diff
 
         self.episode_reward += reward
         self.step_counter += 1
@@ -110,7 +112,8 @@ class PandaEnv(gym.Env):
         if self.step_counter > self.steps_per_episode:
             if self.episode_counter % 10 == 0:
                 def f(n): return ",".join([f"{x:02f}" for x in n])
-                print(f"r: {f([reward, self.episode_reward / (self.step_counter+1)])} / b: {f([self.n_bumps / (self.episode_counter+1)])}")
+                print(f"reward (this, avg/step): {f([reward, self.episode_reward / (self.step_counter+1)])}")
+								print(f"goals: {n_goals} / {f([self.n_goals / (self.episode_counter+1)])}")
                 time.sleep(1)
             reward = 0
             done = True
