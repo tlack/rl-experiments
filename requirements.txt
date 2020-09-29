@@ -1,4 +1,4 @@
-tensorflow==2.0.0b1
+tensorflow
 tensorflow-probability
 pybullet
 gym
