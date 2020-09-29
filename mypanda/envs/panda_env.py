@@ -21,6 +21,7 @@ class PandaEnv(gym.Env):
         self.episode_reward = 0 
         self.action_muting = 0.2
         self.steps_per_episode = MAX_EPISODE_LEN
+        self.goal = 'bumps'
         p.connect(p.GUI)
         p.resetDebugVisualizerCamera(cameraDistance=1.5, cameraYaw=0, cameraPitch=-40, cameraTargetPosition=[0.55,-0.35,0.2])
         self.action_space = spaces.Box(np.array([-1]*4), np.array([1]*4))
@@ -71,17 +72,26 @@ class PandaEnv(gym.Env):
 
         obj_dist = dist(self.object_loc, state_object)
         # print('od', obj_dist)
-        if obj_dist > 0.1:
-            print('BUMPED!')
-            reward = 100
-            done = True
-            self.n_bumps += 1
-        else:
-            # print(np.array(state_object) - np.array(newPosition))
-            diff = dist(state_object, newPosition) * 3
-            reward = 1 - diff
-            # print('reward2', cosine_similarity(np.array([state_object]), np.array([state_robot])))
-            done = False
+
+        if self.goal == 'bumps':
+            if obj_dist > 0.1:
+                print('BUMPED!')
+                reward = 100
+                done = True
+                self.n_bumps += 1
+            else:
+                # print(np.array(state_object) - np.array(newPosition))
+                diff = dist(state_object, newPosition) * 3
+                reward = 1 - diff
+                # print('reward2', cosine_similarity(np.array([state_object]), np.array([state_robot])))
+                done = False
+        elif self.goal == 'touches':
+            diff = dist(state_object, newPosition) * 10
+            if diff < 0:
+                reward = 10
+                done = False
+            else:
+                reward= 1 - diff
 
         self.episode_reward += reward
         self.step_counter += 1
