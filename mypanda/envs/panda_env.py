@@ -19,6 +19,7 @@ class PandaEnv(gym.Env):
         self.step_counter = 0
         self.episode_counter = 0
         self.episode_reward = 0 
+        self.action_muting = 0.2
         p.connect(p.GUI)
         p.resetDebugVisualizerCamera(cameraDistance=1.5, cameraYaw=0, cameraPitch=-40, cameraTargetPosition=[0.55,-0.35,0.2])
         self.action_space = spaces.Box(np.array([-1]*4), np.array([1]*4))
@@ -34,7 +35,7 @@ class PandaEnv(gym.Env):
             p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,0)
 
         orientation = p.getQuaternionFromEuler([0.,-math.pi,math.pi/2.])
-        dv = 0.5
+        dv = self.action_muting
         dx = action[0] * dv
         dy = action[1] * dv
         dz = action[2] * dv

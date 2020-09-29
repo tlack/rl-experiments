@@ -308,7 +308,7 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
                 highest = total_reward
             return total_reward, eps_time, t_updates           
 
-def main():
+def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.2):
    ############## Hyperparameters ##############
     load_weights        = False # If you want to load the agent, set this to True
     save_weights        = True # If you want to save the agent, set this to True
@@ -317,25 +317,26 @@ def main():
     using_google_drive  = False
 
     render              = False # If you want to display the image. Turn this off if you run this in Google Collab
-    n_update            = 50 # How many episode before you update the Policy. ocommended set to 128 for Discrete
-    n_plot_batch        = 1000000 # How many episode you want to plot the result
-    n_episode           = 100000 # How many episode you want to run
+    #n_update            = 50 # How many episode before you update the Policy. ocommended set to 128 for Discrete
+    n_plot_batch        = 1000 # How many episode you want to plot the result
+    n_episode           = 1000 # How many episode you want to run
     n_saved             = 100 # How many episode to run before saving the weights
 
     policy_kl_range     = 0.03 # Set to 0.0008 for Discrete
     policy_params       = 5 # Set to 20 for Discrete
     value_clip          = 150 # How many value will be clipped. Recommended set to the highest or lowest possible reward
-    entropy_coef        = 0.01 # How much randomness of action you will get
+    # entropy_coef        = 0.01 # How much randomness of action you will get
     vf_loss_coef        = 1.0 # Just set to 1
     minibatch           = 32 # How many batch per update. size of batch = n_update / minibatch. Rocommended set to 4 for Discrete
     PPO_epochs          = 5 # How many epoch per update
     
     gamma               = 0.99 # Just set to 0.99
     lam                 = 0.95 # Just set to 0.95
-    learning_rate       = 3e-4 # 3e-4 # Just set to 0.95
+    #learning_rate       = 3e-4 # 3e-4 # Just set to 0.95
     ############################################# 
     env_name            = 'panda-v9' # Set the env you want
     env                 = gym.make(env_name)
+    env.action_muting   = action_muting
 
     state_dim           = env.observation_space.shape[0]
     action_dim          = env.action_space.shape[0]
@@ -412,6 +413,7 @@ def main():
             plot(rewards)
             plot(times)
 
+    print('Configuration:\n', repr(locals()))
     print('========== Final ==========')
      # Plot the reward, times for every episode
     plot(rewards)
