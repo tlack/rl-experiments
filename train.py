@@ -1,12 +1,14 @@
 # CHANGE THIS:
 
 opt_ranges = {
+    "n_episode": [100],
     "n_update": [4, 24, 99, 299, 499, 999, 1499],
-    "goal_types": ["touches"]
+    "goal_type": ["touches"]
 }
 
 #
 
+import datetime
 import json
 import random
 
@@ -17,6 +19,7 @@ while 1:
     cfg = make_config(opt_ranges)
     print(f"!!** TRAINING NEW CONFIG:\n\n{repr(cfg)}\n\n")
     reward = ppo_panda.main(**cfg)
+    reward["date"] = datetime.datetime.today()
     reward["config"] = cfg;
     open("train-log.jsonlines", "a").write(json.dumps(reward)+"\n")
 

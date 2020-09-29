@@ -138,7 +138,7 @@ class PandaEnv(gym.Env):
                     f"reward (this, avg/step): {f([reward, self.episode_reward / (self.step_counter+1)])}"
                 )
                 print(
-                    f"goals: {n_goals} / {f([self.n_goals / (self.episode_counter+1)])}"
+                    f"goals: {self.n_goals} / {f([self.n_goals / (self.episode_counter+1)])}"
                 )
                 time.sleep(1)
                 reward = 0

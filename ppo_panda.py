@@ -403,6 +403,7 @@ def main(
     PPO_epochs=5,
     steps_per_episode=100,
     goal_type="bumps",
+    n_episode=1000
 ):
     ############## Hyperparameters ##############
     load_weights = False  # If you want to load the agent, set this to True
@@ -415,7 +416,7 @@ def main(
     # n_update            = 50 # How many episode before you update the Policy. ocommended set to 128 for Discrete
     # n_steps_per_episode = 100 # How many steps per episode, before reset?
     n_plot_batch = 1000  # How many episode you want to plot the result
-    n_episode = 1000  # How many episode you want to run
+    # n_episode = 1000  # How many episode you want to run
     n_saved = 100  # How many episode to run before saving the weights
 
     policy_kl_range = 0.03  # Set to 0.0008 for Discrete
@@ -480,8 +481,8 @@ def main(
             env, agent, state_dim, render, training_mode, t_updates, n_update
         )
         print(
-            "Episode {} \t t_reward: {} \t time: {} \t ".format(
-                i_episode, total_reward, time
+            "Episode {} \t t_reward: {} \t steps: {} \t ".format(
+                i_episode, total_reward, steps_this_ep
             )
         )
         total_steps += steps_this_ep
