@@ -311,7 +311,7 @@ def run_episode(env, agent, state_dim, render, training_mode, t_updates, n_updat
                 highest = total_reward
             return total_reward, eps_time, t_updates           
 
-def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5):
+def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5, PPO_epochs=5):
    ############## Hyperparameters ##############
     load_weights        = False # If you want to load the agent, set this to True
     save_weights        = True # If you want to save the agent, set this to True
@@ -331,7 +331,7 @@ def main(n_update=50, learning_rate=3e-4, entropy_coef=0.01, action_muting=0.5):
     # entropy_coef        = 0.01 # How much randomness of action you will get
     vf_loss_coef        = 1.0 # Just set to 1
     minibatch           = 32 # How many batch per update. size of batch = n_update / minibatch. Rocommended set to 4 for Discrete
-    PPO_epochs          = 5 # How many epoch per update
+    # PPO_epochs          = 5 # How many epoch per update
     
     gamma               = 0.99 # Just set to 0.99
     lam                 = 0.95 # Just set to 0.95
