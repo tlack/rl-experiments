@@ -10,6 +10,17 @@ import numpy as np
 import random
 import time
 
+# https://stackoverflow.com/a/39662359
+def is_notebook():
+	try:
+		shell = get_ipython().__class__.__name__
+		if shell == 'ZMQInteractiveShell': return True   # Jupyter notebook or qtconsole
+		elif shell == 'TerminalInteractiveShell': return False  # Terminal running IPython
+		else: return False  # Other type (?)
+	except NameError:
+		return False      # Probably standard Python interpreter
+
+
 MAX_EPISODE_LEN = 100
 
 class PandaEnv(gym.Env):
@@ -22,7 +33,7 @@ class PandaEnv(gym.Env):
         self.action_muting = 0.2
         self.steps_per_episode = MAX_EPISODE_LEN
         self.goal = 'bumps'
-        p.connect(p.GUI)
+        p.connect(p.GUI if is_notebook() else p.DIRECT)
         p.resetDebugVisualizerCamera(cameraDistance=1.5, cameraYaw=0, cameraPitch=-40, cameraTargetPosition=[0.55,-0.35,0.2])
         self.action_space = spaces.Box(np.array([-1]*4), np.array([1]*4))
         self.observation_space = spaces.Box(np.array([-1]*8), np.array([1]*8))
