@@ -1,7 +1,11 @@
+# CHANGE ME:
+
+MAX_EPISODE_LEN = 100
+
+#
 import gym
 from gym import error, spaces, utils
 from gym.utils import seeding
-
 import os
 import pybullet as p
 import pybullet_data
@@ -18,9 +22,8 @@ def is_notebook():
     except NameError:
         return False  # Probably standard Python interpreter
 
-
-MAX_EPISODE_LEN = 100
-
+if is_notebook():
+  from IPython.display import display
 
 class PandaEnv(gym.Env):
     metadata = {"render.modes": ["human"]}
@@ -222,6 +225,10 @@ class PandaEnv(gym.Env):
         rgb_array = np.reshape(rgb_array, (720, 960, 4))
 
         rgb_array = rgb_array[:, :, :3]
+
+        if is_notebook() and os.path.exists("/tmp/render.txt"):
+          display(rgb_data)
+
         return rgb_array
 
     def _get_state(self):
@@ -229,3 +236,4 @@ class PandaEnv(gym.Env):
 
     def close(self):
         p.disconnect()
+print('pa')
