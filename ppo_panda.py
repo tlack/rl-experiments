@@ -1,3 +1,5 @@
+# Based on https://github.com/wisnunugroho21/reinforcement_learning_ppo_rnd
+
 import gym
 from gym.envs.registration import register
 
