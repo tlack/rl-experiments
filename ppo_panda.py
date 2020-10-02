@@ -316,7 +316,7 @@ class Agent:
 
     # Update the model
     def update_ppo(self):
-        print("updating ppo..")
+        # print("updating ppo..")
         batch_size = int(len(self.memory) / self.minibatch)
 
         # Optimize policy for K epochs:
