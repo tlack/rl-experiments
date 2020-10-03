@@ -421,9 +421,14 @@ def main(
     steps_per_episode=100,
     goal_type="bumps",
     n_episode=1000,
-    minibatch=32
+    minibatch=32,
+    fixed_seed=False
 ):
-    ############## Hyperparameters ##############
+
+    # 
+    # Default hyperparams
+    # 
+
     load_weights = False  # If you want to load the agent, set this to True
     save_weights = True  # If you want to save the agent, set this to True
     training_mode = True  # If you want to train the agent, set this to True. But set this otherwise if you only want to test it
@@ -448,12 +453,20 @@ def main(
     gamma = 0.99  # Just set to 0.99
     lam = 0.95  # Just set to 0.95
     # learning_rate       = 3e-4 # 3e-4 # Just set to 0.95
-    #############################################
+
+
     env_name = "panda-v9"  # Set the env you want
     env = gym.make(env_name)
     env.action_muting = action_muting
     env.steps_per_episode = steps_per_episode
     env.goal = goal_type
+
+    if fixed_seed:
+        print(f'USING FIXED SEED: {fixed_seed}')
+        tf.random.set_seed(fixed_seed)
+        env.seed(fixed_seed)
+        env.action_space.seed(fixed_seed)
+        env.observation_space.seed(fixed_seed)
 
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]

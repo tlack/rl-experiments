@@ -1,10 +1,10 @@
 # CHANGE THIS:
 
 opt_ranges = {
-    "learning_rate": [3e-7],
-    "action_muting": [0.2],
-    "n_episode": [30],
-    "steps_per_episode": [500]
+    "learning_rate": 3e-7,
+    "steps_per_episode": 500,
+    "n_update": 500,
+    "fixed_seed": 777
 }
 
 #
@@ -35,3 +35,9 @@ def train_with_ranges(opt_ranges):
 if __name__ == "__main__":
   while 1:
     train_with_ranges(opt_ranges)
+
+#
+#BUMPED! 1.0501917523124382
+#RECORD! -488.3435008821028
+#Episode 1 	 t_reward: -488.3435008821028 	 steps: 456 	 
+
