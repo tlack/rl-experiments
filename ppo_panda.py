@@ -442,7 +442,7 @@ def main(
 
     policy_kl_range = 0.03  # Set to 0.0008 for Discrete
     policy_params = 5  # Set to 20 for Discrete
-    value_clip = 150  # How many value will be clipped. Recommended set to the highest or lowest possible reward
+    value_clip = 2# How many value will be clipped. Recommended set to the highest or lowest possible reward
     # entropy_coef        = 0.01 # How much randomness of action you will get
     vf_loss_coef = 1.0  # Just set to 1
     # minibatch = 32  # How many batch per update. size of batch = n_update / minibatch. Rocommended set to 4 for Discrete

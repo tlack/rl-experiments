@@ -1,10 +1,14 @@
 # CHANGE THIS:
 
 opt_ranges = {
-    "n_episode": [50],
-    "n_update": [32, 99, 299, 499, 999, 1499],
-    "learning_rate": [3e-1, 3e-2, 3e-3, 3e-4, 3e-5, 3e-6],
-    "goal_type": ["bumps"]
+    "minibatch": [16],
+    "learning_rate": [3e-6],
+    "steps_per_episode": [1024],
+    "n_update": [512],
+    "entropy_coef": [0.01],
+    "action_muting": [0.2],
+    "n_episode": [500],
+    "PPO_epochs": [16]
 }
 
 #

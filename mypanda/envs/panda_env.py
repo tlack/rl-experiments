@@ -95,8 +95,11 @@ class PandaEnv(gym.Env):
             )[::-1]
 
         def dist(a, b):
-            diff = abs(np.sum(np.array(a) - np.array(b)))
-            return diff
+            #print('a',a)
+            #print('b',b)
+            aa = np.array(a)
+            bb = np.array(b)
+            return np.sqrt(np.sum((aa-bb)**2,axis=0))
 
         obj_dist = dist(self.object_loc, state_object)
         # print('od', obj_dist)
@@ -109,8 +112,16 @@ class PandaEnv(gym.Env):
                 self.n_goals += 1
             else:
                 # print(np.array(state_object) - np.array(newPosition))
-                diff = dist(state_object, newPosition) * 3
-                reward = 1 - diff
+                diff = dist(state_object, newPosition)
+                print('DIFF', diff)
+                close_threshhold = 0.25
+                boost = 1.5
+                if diff < close_threshhold:
+                    reward = boost - diff
+                else:
+                    reward = -1 * (diff**2)
+                print('REWARD', reward)
+                time.sleep(0.3)
                 # print('reward2', cosine_similarity(np.array([state_object]), np.array([state_robot])))
                 done = False
         elif self.goal == "touches":
