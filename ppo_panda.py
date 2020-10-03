@@ -423,7 +423,8 @@ def main(
     PPO_epochs=5,
     steps_per_episode=100,
     goal_type="bumps",
-    n_episode=1000
+    n_episode=1000,
+    minibatch=32
 ):
     ############## Hyperparameters ##############
     load_weights = False  # If you want to load the agent, set this to True
@@ -444,7 +445,7 @@ def main(
     value_clip = 150  # How many value will be clipped. Recommended set to the highest or lowest possible reward
     # entropy_coef        = 0.01 # How much randomness of action you will get
     vf_loss_coef = 1.0  # Just set to 1
-    minibatch = 32  # How many batch per update. size of batch = n_update / minibatch. Rocommended set to 4 for Discrete
+    # minibatch = 32  # How many batch per update. size of batch = n_update / minibatch. Rocommended set to 4 for Discrete
     # PPO_epochs          = 5 # How many epoch per update
 
     gamma = 0.99  # Just set to 0.99
