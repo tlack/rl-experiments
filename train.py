@@ -36,8 +36,16 @@ if __name__ == "__main__":
   while 1:
     train_with_ranges(opt_ranges)
 
+# Baseline note:
+# 
+# With fixed_seed = 777, and configuration:
 #
-#BUMPED! 1.0501917523124382
-#RECORD! -488.3435008821028
-#Episode 1 	 t_reward: -488.3435008821028 	 steps: 456 	 
+#   {'learning_rate': 3e-07, 'steps_per_episode': 500, 'n_update': 500, 'fixed_seed': 777}
+#
+# ..should bump every time in about 500 steps:
+#
+# BUMPED! 1.0501917523124382
+# RECORD! -488.3435008821028
+# Episode 1 	 t_reward: -488.3435008821028 	 steps: 456 	 
+#
 
