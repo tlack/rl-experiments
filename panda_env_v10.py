@@ -47,6 +47,7 @@ class PandaEnv(gym.Env):
         self.action_space = spaces.Box(np.array([-1] * 4), np.array([1] * 4))
         self.observation_space = spaces.Box(np.array([-1] * 8), np.array([1] * 8))
         self.n_goals = 0
+        self._p = p;
 
     def step(self, action):
         p.configureDebugVisualizer(p.COV_ENABLE_SINGLE_STEP_RENDERING)
@@ -251,3 +252,6 @@ class PandaEnv(gym.Env):
     def close(self):
         p.disconnect()
 print('pa')
+
+gym.register(id='panda-v10', entry_point='panda_env_v10:PandaEnv')
+

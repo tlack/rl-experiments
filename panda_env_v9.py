@@ -250,4 +250,5 @@ class PandaEnv(gym.Env):
 
     def close(self):
         p.disconnect()
-print('pa')
+
+gym.register(id='panda-v9', entry_point='panda_env_v9:PandaEnv')

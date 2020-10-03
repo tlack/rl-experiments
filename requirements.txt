@@ -1,4 +1,3 @@
-tensorflow>=2.3
 tensorflow-probability
 pybullet
 gym

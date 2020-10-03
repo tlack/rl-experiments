@@ -1,14 +1,10 @@
 # CHANGE THIS:
 
 opt_ranges = {
-    "minibatch": [16],
-    "learning_rate": [3e-6],
-    "steps_per_episode": [1024],
-    "n_update": [512],
-    "entropy_coef": [0.01],
+    "learning_rate": [3e-7],
     "action_muting": [0.2],
-    "n_episode": [500],
-    "PPO_epochs": [16]
+    "n_episode": [30],
+    "steps_per_episode": [500]
 }
 
 #
@@ -17,10 +13,11 @@ import datetime
 import json
 import random
 
+import panda_env_v9
 import ppo_panda
 
 def make_config(ranges): 
-  return {k:random.choice(v) for k,v in ranges.items()}
+  return {k:(random.choice(v) if type(v) == type([]) else v) for k,v in ranges.items()} 
 
 def train_with_config(cfg):
   reward = ppo_panda.main(**cfg)
