@@ -1,5 +1,11 @@
 # Based on https://github.com/wisnunugroho21/reinforcement_learning_ppo_rnd
 
+import matplotlib.pyplot as plt
+import numpy as np
+import sys
+import numpy
+import random
+
 import gym
 from gym.envs.registration import register
 
@@ -9,10 +15,6 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras import Model
 from tensorflow.keras.utils import to_categorical
 
-import matplotlib.pyplot as plt
-import numpy as np
-import sys
-import numpy
 
 # https://stackoverflow.com/a/39662359
 def is_notebook():
@@ -463,6 +465,7 @@ def main(
 
     if fixed_seed:
         print(f'USING FIXED SEED: {fixed_seed}')
+        random.seed(fixed_seed)
         tf.random.set_seed(fixed_seed)
         env.seed(fixed_seed)
         env.action_space.seed(fixed_seed)
@@ -579,13 +582,17 @@ def main(
     rmx = np.max(rewards)
     rma = np.mean(rewards)
     n_goals = env.n_goals
+    goals_per_step = n_goals / total_steps
+    goals_per_episode = n_goals / i_episode
+    print(f"# GOALS: {n_goals}\nGOALS PER STEP: {goals_per_step:04f}\nGOALS PER EPISODE: {goals_per_episode:04f}")
     env.close()
     return {
         "n_goals": n_goals,
         "rewards": {"min": rmn, "max": rmx, "mean": rma},
         "total_steps": total_steps,
         "mean_steps": np.mean(times),
-        "goals_per_step": n_goals / total_steps
+        "goals_per_step": goals_per_step,
+        "goals_per_episode": goals_per_episode
     }
 
 
