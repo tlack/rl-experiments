@@ -122,7 +122,7 @@ class PandaEnv(gym.Env):
                 newPosition[2] += ROBOT_Z_OFS
                 diff = dist(self.object_loc, newPosition, echo=False)
                 #print('DIFF', diff)
-                reward = 1 - (diff * 2)
+                reward = 0 - (diff * 2)
                 # print(f'DIFF: {diff:05f} REWARD: {reward:05f}')
                 # time.sleep(0.1)
                 # print('reward2', cosine_similarity(np.array([state_object]), np.array([state_robot])))
